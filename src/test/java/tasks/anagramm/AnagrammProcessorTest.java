@@ -4,34 +4,52 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static tasks.anagramm.AnagrammProcessor.makeAnagramm;
 
 public class AnagrammProcessorTest {
-	@Test (expected = IllegalArgumentException.class)
-	public void test_makeAnagramm_argument_null() {
-		makeAnagramm(null);
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void test_makeAnagramm_argument_string_is_empty() {
-		makeAnagramm(new String());
-	}
-	
-	@Test
-	public void test_makeAnagram_arguments_correct_result() {
-		assertThat(makeAnagramm("asd!f zx##c"), is("fds!a cx##z"));
-		assertThat(makeAnagramm("fds!a cx##z"), is("asd!f zx##c"));
-		assertThat(makeAnagramm("abcd efgh"), is("dcba hgfe"));
-		assertThat(makeAnagramm("a1bcd, efg!h"), is("d1cba, hgf!e"));
-		assertThat(makeAnagramm("12!@&*%$:;"), is("12!@&*%$:;"));
-	}
 
-	@Test
-	public void test_makeAnagram_arguments_incorrect_result() {
-		assertThat(makeAnagramm("asd!f zx##c"), not("cxz!f ds##a"));
-		assertThat(makeAnagramm("asd!f zx##cz"), not("cxz!fds##a"));
-		assertThat(makeAnagramm("1abcd efgh2"), not("2dcba hgfe1"));
-		assertThat(makeAnagramm("12!@&*%$:;"), not(";:$%*&@!21"));
-	}
+    @Test (expected = IllegalArgumentException.class)
+    public void makeAnagramm_ArgumentNull_IllegalArgumentExceptionThrown() {
+        makeAnagramm(null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void makeAnagramm_ArgumentStringIsEmpty_IllegalArgumentExceptionThrown() {
+        makeAnagramm(new String());
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentOnlyLetters_CorrectAnagramm() {
+        assertThat(makeAnagramm("abcd efgh"), is("dcba hgfe"));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentOnlyDigits_CorrectAnagramm() {
+        assertThat(makeAnagramm("142 367 432"), is("142 367 432"));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentOnlySpecialSymbols_CorrectAnagramm() {
+        assertThat(makeAnagramm("@*(:,/##-_?!.><="), is("@*(:,/##-_?!.><="));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentLettersAndDigits_CorrectAnagramm() {
+        assertThat(makeAnagramm("ab1cd e23fgh4"), is("dc1ba h23gfe4"));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentLettersAndSpecialSymbols_CorrectAnagramm() {
+        assertThat(makeAnagramm("asd!f zx##c"), is("fds!a cx##z"));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentDigitsAndSpecialSymbols_CorrectAnagramm() {
+        assertThat(makeAnagramm("09/!2 3#4#! 6 *"), is("09/!2 3#4#! 6 *"));
+    }
+
+    @Test
+    public void makeAnagramm_ArgumentDigitsAndSpecialSymbolsAndLetters_CorrectAnagramm() {
+        assertThat(makeAnagramm("0!f2zbhy 3#4asdf#! a6 b*"), is("0!y2hbzf 3#4fdsa#! a6 b*"));
+    }
 }
