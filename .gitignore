@@ -14,7 +14,6 @@ target/
 .idea/replstate.xml
 
 # User-specific stuff:
->>>>>>> 5fa185c4c772b86cfc3cf4d2ba023e309bb58142
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
