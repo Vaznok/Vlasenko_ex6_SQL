@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IntegerDivisionManager {
-    private static ViewDivision view = new ViewDivision();
-    private static List<Integer> dividers = new ArrayList();
-    private static List<Integer> remains = new ArrayList();
-    private static List<Integer> partNums = new ArrayList<>();
+    private static List<Integer> nearestDivisorNums = new ArrayList();
+    private static List<Integer> numRemains = new ArrayList();
+    private static List<Integer> partialNums = new ArrayList<>();
 
-    public static void manageDivision(int number, int divisor) {
+    public static void makeDivision(int number, int divisor) {
         if (number <= 0 || divisor <= 0)
             throw new IllegalArgumentException("Inputted number and divisor must been higher than '0'!");
         if (number < divisor)
             throw new IllegalArgumentException("Inputted number has to be higher or equal to divisor!");
+        nearestDivisorNums.clear();
+        numRemains.clear();
+        partialNums.clear();
         divisionManager(number, divisor);
-        view.drawDivisionTable(number, divisor, dividers, remains, partNums);
+        ViewDivision view = new ViewDivision(number, divisor, nearestDivisorNums, numRemains, partialNums);
+        view.drawDivisionTable();
     }
 
     private static void divisionManager(int number, int divisor) {
@@ -25,48 +28,54 @@ public class IntegerDivisionManager {
 
         int tmpNumber = number;
         while (differenceInLength != -1) {
-            int partNum = foread(tmpNumber, differenceInLength, divisor);
-            partNums.add(partNum);
-            if(partNum < divisor) {
+            int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
+            if(partialNum < divisor) {
                 differenceInLength--;
+                if (differenceInLength == -1)
+                    partialNums.add(partialNum);
                 continue;
             }
-            int divider = partNum / divisor * divisor;
-            int remain = partNum % divisor;
-            dividers.add(divider);
-            remains.add(remain);
-            tmpNumber = tmpNumber(tmpNumber, partNum, remain);
+            partialNums.add(partialNum);
+            int nearestDivisorNum = partialNum / divisor * divisor;
+            int numRemain = partialNum % divisor;
+            nearestDivisorNums.add(nearestDivisorNum);
+            numRemains.add(numRemain);
+            tmpNumber = changeTmpNum(tmpNumber, partialNum, numRemain);
             differenceInLength--;
         }
     }
 
-    private static int foread(int tmpNumber, int diff, int divisor) {
-        StringBuilder selectNum = new StringBuilder(String.valueOf(tmpNumber));
-        for (int i = 0; i < diff; i++) {
-            selectNum.deleteCharAt(selectNum.length() - 1);
-            int newTmpNum = Integer.parseInt(selectNum.toString());
+    private static int selectPartialNum(int tmpNumber, int divisor, int differenceInLength) {
+        StringBuilder selectPartialNum = new StringBuilder(String.valueOf(tmpNumber));
+        for (int i = 0; i < differenceInLength; i++) {
+            selectPartialNum.deleteCharAt(selectPartialNum.length() - 1);
+            int newTmpNum = Integer.parseInt(selectPartialNum.toString());
             if(newTmpNum < divisor) {
-                selectNum.insert(selectNum.length(), String.valueOf(tmpNumber).charAt(selectNum.length()));
+                selectPartialNum.insert(selectPartialNum.length(), String.valueOf(tmpNumber).charAt(selectPartialNum.length()));
                 break;
             }
         }
-        return Integer.valueOf(selectNum.toString());
+        return Integer.valueOf(selectPartialNum.toString());
     }
 
-    private static int tmpNumber (int tmpNumber, int partNum, int remain) {
-        StringBuilder changeNum = new StringBuilder(String.valueOf(tmpNumber));
-        for (int i = 0, j = String.valueOf(partNum).length(); i < j; i++) {
-            changeNum.deleteCharAt(0);
+    private static int changeTmpNum(int tmpNumber, int partialNum, int numRemain) {
+        StringBuilder changeTmpNum = new StringBuilder(String.valueOf(tmpNumber));
+        for (int i = 0, j = String.valueOf(partialNum).length(); i < j; i++) {
+            changeTmpNum.deleteCharAt(0);
         }
-        changeNum.insert(0, remain);
-        return Integer.valueOf(changeNum.toString());
+        changeTmpNum.insert(0, numRemain);
+        return Integer.valueOf(changeTmpNum.toString());
     }
 
-   /* private static int differenceInLenght(int diff, int devider, int remain) {
-        int dividerLenght = String.valueOf(devider).length();
-        int remainLenght = String.valueOf(remain).length();
-        int difference = dividerLenght - remainLenght;
-        return diff - 1;
-    }*/
+    public static List<Integer> getNearestDivisorNums() {
+        return nearestDivisorNums;
+    }
 
+    public static List<Integer> getNumRemains() {
+        return numRemains;
+    }
+
+    public static List<Integer> getPartialNums() {
+        return partialNums;
+    }
 }
