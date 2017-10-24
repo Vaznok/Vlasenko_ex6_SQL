@@ -8,6 +8,7 @@
 
 # my Default
 src/main/java/tasks/anagramm
+src/test/java/tasks/anagramm
 .idea/workspace.xml
 .idea/        
 vlasenkoFoxminded.iml
