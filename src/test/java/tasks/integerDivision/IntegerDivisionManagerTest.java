@@ -13,7 +13,7 @@ public class IntegerDivisionManagerTest {
     public void makeDivision_ArgumentNumberHigherThanDivisor_IllegalArgumentExceptionThrown() {
         makeDivision(2398, 2399);
     }
-    
+
     @Test
     public void makeDivision_ArgumentNumberZero_CorrectResult() {
         makeDivision(0, 23);
