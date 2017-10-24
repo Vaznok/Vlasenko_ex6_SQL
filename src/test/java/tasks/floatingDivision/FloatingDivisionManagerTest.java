@@ -1,4 +1,4 @@
-package tasks.integerDivision;
+package tasks.floatingDivision;
 
 import org.junit.Test;
 
@@ -6,9 +6,10 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static tasks.integerDivision.IntegerDivisionManager.*;
+import static tasks.floatingDivision.FloatingDivisionManager.*;
+import static tasks.floatingDivision.FloatingDivisionManager.makeDivision;
 
-public class IntegerDivisionManagerTest {
+public class FloatingDivisionManagerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void makeDivision_ArgumentDivisorZero_IllegalArgumentExceptionThrown() {
@@ -53,9 +54,9 @@ public class IntegerDivisionManagerTest {
     @Test
     public void makeDivision_ArgumentsCorrectDivisorOneDigit_CorrectResult() {
         makeDivision(78459, 4);
-        assertThat(getPartialNums(), is(Arrays.asList(7, 38, 24, 5, 19)));
-        assertThat(getNearestDivisorNums(), is(Arrays.asList(4, 36, 24, 4, 16)));
-        assertThat(getNumRemains(), is(Arrays.asList(3, 2, 0, 1, 3)));
+        assertThat(getPartialNums(), is(Arrays.asList(7, 38, 24, 5, 19, 30, 20)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(4, 36, 24, 4, 16, 28, 20)));
+        assertThat(getNumRemains(), is(Arrays.asList(3, 2, 0, 1, 3, 2, 0)));
     }
 
     @Test

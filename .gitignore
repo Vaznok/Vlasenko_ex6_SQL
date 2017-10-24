@@ -9,6 +9,8 @@
 # my Default
 src/main/java/tasks/anagramm
 src/test/java/tasks/anagramm
+src/main/java/tasks/integerDivision
+src/test/java/tasks/integerDivision
 .idea/workspace.xml
 .idea/        
 vlasenkoFoxminded.iml
@@ -88,3 +90,4 @@ fabric.properties
 # End of https://www.gitignore.io/api/intellij
 src/main/resources/
 src/test/resources/
+src/main/java/tasks/divisionWithPeriodFinding/
