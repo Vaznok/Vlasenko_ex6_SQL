@@ -21,9 +21,16 @@ public class ViewDivision {
     }
 
     public void drawDivisionTable() {
-        drawHead();
-        drawBody();
-        System.out.println("--------------");
+        if (number < divisor) {
+            String viewHead = String.format("%d|%d\n%s|%d",
+                    number, divisor, drawLine(0, " "), number/divisor);
+            System.out.println(viewHead);
+            System.out.println("--------------");
+        } else {
+            drawHead();
+            drawBody();
+            System.out.println("--------------");
+        }
     }
 
     private void drawHead () {

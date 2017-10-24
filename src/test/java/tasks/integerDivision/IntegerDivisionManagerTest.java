@@ -9,14 +9,17 @@ import static org.hamcrest.Matchers.is;
 import static tasks.integerDivision.IntegerDivisionManager.*;
 
 public class IntegerDivisionManagerTest {
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void makeDivision_ArgumentNumberHigherThanDivisor_IllegalArgumentExceptionThrown() {
         makeDivision(2398, 2399);
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void makeDivision_ArgumentNumberZero_IllegalArgumentExceptionThrown() {
+    
+    @Test
+    public void makeDivision_ArgumentNumberZero_CorrectResult() {
         makeDivision(0, 23);
+        assertThat(getPartialNums(), is(Arrays.asList()));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList()));
+        assertThat(getNumRemains(), is(Arrays.asList()));
     }
 
     @Test(expected = IllegalArgumentException.class)
