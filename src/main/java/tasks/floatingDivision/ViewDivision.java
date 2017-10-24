@@ -22,8 +22,8 @@ public class ViewDivision {
 
     public void drawDivisionTable() {
         if (number < divisor) {
-            String viewHead = String.format("%d|%d\n%s|%d",
-                    number, divisor, drawLine(0, " "), number/divisor);
+            String viewHead = String.format("%d|%d\n%s|%.10f",
+                    number, divisor, drawLine(0, " "), (float)number/divisor);
             System.out.println(viewHead);
             System.out.println("--------------");
         } else {
@@ -34,8 +34,8 @@ public class ViewDivision {
     }
 
     private void drawHead () {
-        String viewHead = String.format("%d|%d\n%s|%d",
-                number, divisor, drawLine(0, String.valueOf(nearestDivisorNums.get(0))), number/divisor);
+        String viewHead = String.format("%d|%d\n%s|%.10f",
+                number, divisor, drawLine(0, String.valueOf(nearestDivisorNums.get(0))), (float)number/divisor);
         System.out.println(viewHead);
     }
 
@@ -62,14 +62,8 @@ public class ViewDivision {
     private String drawLine (int indexInsertion, String str) {
         int numLength = String.valueOf(number).length();
         StringBuilder line = new StringBuilder();
-        if (numLength - str.length() > indexInsertion) {
-            for (int i = 0; i < numLength - str.length(); i++)
-                line.append(" ");
-            return line.insert(indexInsertion, str).toString();
-        } else {
-            for (int i = 0; i < indexInsertion + str.length() + 1; i++)
-                line.append(" ");
-            return line.insert(indexInsertion, str).toString();
-        }
+        for (int i = 0; i < indexInsertion + numLength - str.length(); i++)
+            line.append(" ");
+        return line.insert(indexInsertion, str).toString();
     }
 }

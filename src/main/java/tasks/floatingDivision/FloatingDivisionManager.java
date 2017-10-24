@@ -28,9 +28,17 @@ public class FloatingDivisionManager {
 
         int tmpNumber = number;
         while (differenceInLength != -11) {
-            if ((numRemains.get(numRemains.size() - 1) == 0) && differenceInLength < 0) {
-                break;
+            if (!numRemains.isEmpty()) {
+                if ((numRemains.get(numRemains.size() - 1) == 0) && differenceInLength < 0) {
+                    break;
+                }
             }
+            if (numRemains.size() > 1 && differenceInLength < -1) {
+                if (partialNums.get(numRemains.size() - 2) == partialNums.get(numRemains.size() - 1) &&
+                        nearestDivisorNums.get(nearestDivisorNums.size() - 2) == nearestDivisorNums.get(nearestDivisorNums.size() - 1))
+                    break;
+            }
+
             int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
             if(partialNum < divisor) {
                 differenceInLength--;
@@ -69,11 +77,15 @@ public class FloatingDivisionManager {
 
     private static int changeTmpNum(int tmpNumber, int partialNum, int numRemain) {
         StringBuilder changeTmpNum = new StringBuilder(String.valueOf(tmpNumber));
+        while (Integer.valueOf(changeTmpNum.toString()) < partialNum) {
+            changeTmpNum.append(0);
+        }
         for (int i = 0, j = String.valueOf(partialNum).length(); i < j; i++) {
             changeTmpNum.deleteCharAt(0);
         }
         changeTmpNum.insert(0, numRemain);
         return Integer.valueOf(changeTmpNum.toString());
+
     }
 
     static List<Integer> getNearestDivisorNums() {
