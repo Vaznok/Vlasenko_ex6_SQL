@@ -9,18 +9,6 @@ import static org.hamcrest.Matchers.is;
 import static tasks.integerDivision.IntegerDivisionManager.*;
 
 public class IntegerDivisionManagerTest {
-    @Test
-    public void makeDivision_ArgumentNumberHigherThanDivisor_IllegalArgumentExceptionThrown() {
-        makeDivision(2398, 2399);
-    }
-
-    @Test
-    public void makeDivision_ArgumentNumberZero_CorrectResult() {
-        makeDivision(0, 23);
-        assertThat(getPartialNums(), is(Arrays.asList()));
-        assertThat(getNearestDivisorNums(), is(Arrays.asList()));
-        assertThat(getNumRemains(), is(Arrays.asList()));
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void makeDivision_ArgumentDivisorZero_IllegalArgumentExceptionThrown() {
@@ -44,6 +32,22 @@ public class IntegerDivisionManagerTest {
     @Test(expected = IllegalArgumentException.class)
     public void makeDivision_ArgumentsNumberAndDivisorEqualsZero_IllegalArgumentExceptionThrown() {
         makeDivision(0, 0);
+    }
+
+    @Test
+    public void makeDivision_ArgumentNumberZero_CorrectResult() {
+        makeDivision(0, 23);
+        assertThat(getPartialNums(), is(Arrays.asList()));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList()));
+        assertThat(getNumRemains(), is(Arrays.asList()));
+    }
+
+    @Test
+    public void makeDivision_ArgumentNumberHigherThanDivisor_CorrectResult() {
+        makeDivision(2398, 2399);
+        assertThat(getPartialNums(), is(Arrays.asList(2398)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList()));
+        assertThat(getNumRemains(), is(Arrays.asList()));
     }
 
     @Test

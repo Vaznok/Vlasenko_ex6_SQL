@@ -9,10 +9,10 @@ public class IntegerDivisionManager {
     private static List<Integer> partialNums = new ArrayList<>();
 
     public static void makeDivision(int number, int divisor) {
-        if (number < 0 || divisor <= 0)
-            throw new IllegalArgumentException("Inputted number and divisor must been higher than '0'!");
-        /*if (number < divisor)
-            throw new IllegalArgumentException("Inputted number has to be higher or equal to divisor!");*/
+        if (number < 0)
+            throw new IllegalArgumentException("Inputted number mustn't been less than '0'!");
+        if (divisor <= 0)
+            throw new IllegalArgumentException("Inputted divisor mustn't been less or equal to '0'!");
         nearestDivisorNums.clear();
         numRemains.clear();
         partialNums.clear();
