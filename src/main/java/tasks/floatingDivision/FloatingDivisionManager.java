@@ -7,6 +7,7 @@ public class FloatingDivisionManager {
     private static List<Integer> nearestDivisorNums = new ArrayList();
     private static List<Integer> numRemains = new ArrayList();
     private static List<Integer> partialNums = new ArrayList<>();
+    private static StringBuilder result = new StringBuilder();
 
     public static void makeDivision(int number, int divisor) {
         if (number < 0)
@@ -16,8 +17,14 @@ public class FloatingDivisionManager {
         nearestDivisorNums.clear();
         numRemains.clear();
         partialNums.clear();
+        result = new StringBuilder();
+        if (number == 0) {
+            ViewDivision view = new ViewDivision(number, divisor, "0", null, null, null);
+            view.drawDivisionTable();
+            return;
+        }
         divisionManager(number, divisor);
-        ViewDivision view = new ViewDivision(number, divisor, nearestDivisorNums, numRemains, partialNums);
+        ViewDivision view = new ViewDivision(number, divisor, result.toString(), nearestDivisorNums, numRemains, partialNums);
         view.drawDivisionTable();
     }
 
@@ -27,32 +34,43 @@ public class FloatingDivisionManager {
         int differenceInLength = numberLength - divisorLength;
 
         int tmpNumber = number;
-        while (differenceInLength != -11) {
+        while (differenceInLength != -7) {
+            int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
+            if(partialNum < divisor) {
+                differenceInLength--;
+                if (differenceInLength == -7) {
+                    partialNums.add(partialNum);
+                    break;
+                }
+                if (differenceInLength < 0)
+                    tmpNumber = partialNum;
+                continue;
+            }
+            partialNums.add(partialNum);
+            int partialDivResult = partialNum / divisor;
+            int nearestDivisorNum = partialDivResult * divisor;
+            int numRemain = partialNum % divisor;
+            nearestDivisorNums.add(nearestDivisorNum);
+            numRemains.add(numRemain);
+            if (numRemains.size() > 1 && differenceInLength <= -1) {
+                if (partialNums.get(partialNums.size() - 2) == partialNums.get(partialNums.size() - 1) &&
+                        numRemains.get(numRemains.size() - 2) == numRemains.get(numRemains.size() - 1)) {
+                    partialNums.remove(partialNums.size() - 1);
+                    nearestDivisorNums.remove(nearestDivisorNums.size() - 1);
+                    numRemains.remove(numRemains.size() - 1);
+                    result.deleteCharAt(result.length() - 1);
+                    result.insert(result.length(), "(" + partialDivResult + ")");
+                    break;
+                }
+            }
+            result.append(String.valueOf(partialDivResult));
+            tmpNumber = changeTmpNum(tmpNumber, partialNum, numRemain);
+            differenceInLength--;
             if (!numRemains.isEmpty()) {
                 if ((numRemains.get(numRemains.size() - 1) == 0) && differenceInLength < 0) {
                     break;
                 }
             }
-            if (numRemains.size() > 1 && differenceInLength < -1) {
-                if (partialNums.get(numRemains.size() - 2) == partialNums.get(numRemains.size() - 1) &&
-                        nearestDivisorNums.get(nearestDivisorNums.size() - 2) == nearestDivisorNums.get(nearestDivisorNums.size() - 1))
-                    break;
-            }
-
-            int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
-            if(partialNum < divisor) {
-                differenceInLength--;
-                if (differenceInLength == -11)
-                    partialNums.add(partialNum);
-                continue;
-            }
-            partialNums.add(partialNum);
-            int nearestDivisorNum = partialNum / divisor * divisor;
-            int numRemain = partialNum % divisor;
-            nearestDivisorNums.add(nearestDivisorNum);
-            numRemains.add(numRemain);
-            tmpNumber = changeTmpNum(tmpNumber, partialNum, numRemain);
-            differenceInLength--;
         }
     }
 
@@ -69,8 +87,8 @@ public class FloatingDivisionManager {
             }
             return Integer.valueOf(selectPartialNum.toString());
         } else {
-                selectPartialNum.append("0");
-                return Integer.valueOf(selectPartialNum.toString());
+            selectPartialNum.append("0");
+            return Integer.valueOf(selectPartialNum.toString());
         }
 
     }

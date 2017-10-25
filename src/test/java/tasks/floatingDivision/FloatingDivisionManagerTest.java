@@ -69,7 +69,7 @@ public class FloatingDivisionManagerTest {
     @Test
     public void makeDivision_ArgumentsCorrectDivisorHasSameDigitsAsNumber_CorrectResult() {
         makeDivision(25, 39);
-        assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220, 195)));
+        assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195)));
         assertThat(getNumRemains(), is(Arrays.asList(16, 4, 1, 22, 25)));
     }
