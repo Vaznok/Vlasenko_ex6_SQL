@@ -7,9 +7,15 @@ public class FloatingDivisionManager {
     private static List<Integer> nearestDivisorNums = new ArrayList();
     private static List<Integer> numRemains = new ArrayList();
     private static List<Integer> partialNums = new ArrayList<>();
-    private static StringBuilder result = new StringBuilder();
+    private static StringBuilder tmpResult;
+    private static String result;
 
     public static void makeDivision(int number, int divisor) {
+        makeDivision(number, divisor, 7);
+    }
+
+    public static void makeDivision(int number, int divisor, int countPeriodNum) {
+        countPeriodNum = -1 * countPeriodNum;
         if (number < 0)
             throw new IllegalArgumentException("Inputted number mustn't been less than '0'!");
         if (divisor <= 0)
@@ -17,28 +23,38 @@ public class FloatingDivisionManager {
         nearestDivisorNums.clear();
         numRemains.clear();
         partialNums.clear();
-        result = new StringBuilder();
+        tmpResult = new StringBuilder();
+        result = null;
+
         if (number == 0) {
-            ViewDivision view = new ViewDivision(number, divisor, "0", null, null, null);
+            result = "0";
+            ViewDivision view = new ViewDivision(number, divisor, result, null, null, null);
             view.drawDivisionTable();
             return;
         }
-        divisionManager(number, divisor);
-        ViewDivision view = new ViewDivision(number, divisor, result.toString(), nearestDivisorNums, numRemains, partialNums);
+        divisionManager(number, divisor, countPeriodNum);
+        ViewDivision view = new ViewDivision(number, divisor, result, nearestDivisorNums, numRemains, partialNums);
         view.drawDivisionTable();
     }
 
-    private static void divisionManager(int number, int divisor) {
+    private static void divisionManager(int number, int divisor, int countPeriodNum) {
         int numberLength = String.valueOf(number).length();
         int divisorLength = String.valueOf(divisor).length();
         int differenceInLength = numberLength - divisorLength;
 
         int tmpNumber = number;
-        while (differenceInLength != -7) {
+        while (differenceInLength != countPeriodNum) {
+            if (differenceInLength == -1) {
+                if (number < divisor) {
+                    tmpResult.append("0.");
+                } else {
+                    tmpResult.append(".");
+                }
+            }
             int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
             if(partialNum < divisor) {
                 differenceInLength--;
-                if (differenceInLength == -7) {
+                if (differenceInLength == countPeriodNum) {
                     partialNums.add(partialNum);
                     break;
                 }
@@ -52,18 +68,11 @@ public class FloatingDivisionManager {
             int numRemain = partialNum % divisor;
             nearestDivisorNums.add(nearestDivisorNum);
             numRemains.add(numRemain);
-            if (numRemains.size() > 1 && differenceInLength <= -1) {
-                if (partialNums.get(partialNums.size() - 2) == partialNums.get(partialNums.size() - 1) &&
-                        numRemains.get(numRemains.size() - 2) == numRemains.get(numRemains.size() - 1)) {
-                    partialNums.remove(partialNums.size() - 1);
-                    nearestDivisorNums.remove(nearestDivisorNums.size() - 1);
-                    numRemains.remove(numRemains.size() - 1);
-                    result.deleteCharAt(result.length() - 1);
-                    result.insert(result.length(), "(" + partialDivResult + ")");
-                    break;
-                }
+            if (checkingPeriodFinding(differenceInLength)) {
+                tmpResult.insert(tmpResult.length(), "(" + partialDivResult + ")");
+                break;
             }
-            result.append(String.valueOf(partialDivResult));
+            tmpResult.append(String.valueOf(partialDivResult));
             tmpNumber = changeTmpNum(tmpNumber, partialNum, numRemain);
             differenceInLength--;
             if (!numRemains.isEmpty()) {
@@ -72,6 +81,7 @@ public class FloatingDivisionManager {
                 }
             }
         }
+        result = tmpResult.toString();
     }
 
     private static int selectPartialNum(int tmpNumber, int divisor, int differenceInLength) {
@@ -106,6 +116,19 @@ public class FloatingDivisionManager {
 
     }
 
+    private static boolean checkingPeriodFinding (int differenceInLength) {
+        if (numRemains.size() > 1 && differenceInLength < -1) {
+            if (partialNums.get(partialNums.size() - 2) == partialNums.get(partialNums.size() - 1)) {
+                partialNums.remove(partialNums.size() - 1);
+                nearestDivisorNums.remove(nearestDivisorNums.size() - 1);
+                numRemains.remove(numRemains.size() - 1);
+                tmpResult.deleteCharAt(tmpResult.length() - 1);
+                return true;
+            }
+        }
+        return  false;
+    }
+
     static List<Integer> getNearestDivisorNums() {
         return nearestDivisorNums;
     }
@@ -116,5 +139,9 @@ public class FloatingDivisionManager {
 
     static List<Integer> getPartialNums() {
         return partialNums;
+    }
+
+    static String getResult() {
+        return result;
     }
 }

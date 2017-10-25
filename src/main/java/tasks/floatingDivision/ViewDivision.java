@@ -24,8 +24,8 @@ public class ViewDivision {
 
     public void drawDivisionTable() {
         if (number == 0) {
-            String viewHead = String.format("%d|%d\n%s|%d",
-                    number, divisor, drawLineForHead(0, " ", String.valueOf(number).length()), 0);
+            String viewHead = String.format("%d|%d\n%s|%s",
+                    number, divisor, drawLineForHead(0, " ", String.valueOf(number).length()), result);
             System.out.println(viewHead);
             System.out.println("--------------");
         } else {
