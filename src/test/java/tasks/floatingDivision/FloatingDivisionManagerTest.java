@@ -45,7 +45,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorOneDigit_CorrectResult() {
+    public void makeDivision_ArgumentNumberFiveDigitsDivisorOneDigit_CorrectResult() {
         makeDivision(78459, 4);
         assertThat(getPartialNums(), is(Arrays.asList(7, 38, 24, 5, 19, 30, 20)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(4, 36, 24, 4, 16, 28, 20)));
@@ -54,7 +54,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorOneDigitPeriod10_CorrectResult() {
+    public void makeDivision_ArgumentNumberFiveDigitsDivisorOneDigitInitialPeriodTen_CorrectResult() {
         makeDivision(78459, 4, 10);
         assertThat(getPartialNums(), is(Arrays.asList(7, 38, 24, 5, 19, 30, 20)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(4, 36, 24, 4, 16, 28, 20)));
@@ -62,7 +62,7 @@ public class FloatingDivisionManagerTest {
         assertThat(getResult(), is("19614.75"));
     }
     @Test
-    public void makeDivision_ArgumentNumberHigherThanDivisor_CorrectResult() {
+    public void makeDivision_ArgumentNumberFourDigitsDivisorOneDigitWithRecurPeriod_CorrectResult() {
         makeDivision(1000, 3);
         assertThat(getPartialNums(), is(Arrays.asList(10, 10, 10, 10)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(9, 9, 9, 9)));
@@ -71,7 +71,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentNumberHigherThanDivisorPeriod10_CorrectResult() {
+    public void makeDivision_ArgumentNumberFourDigitsDivisorOneDigitWithRecurPeriodInitialPeriodTen_CorrectResult() {
         makeDivision(1000, 3, 10);
         assertThat(getPartialNums(), is(Arrays.asList(10, 10, 10, 10)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(9, 9, 9, 9)));
@@ -80,7 +80,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorThreeDigits_CorrectResult() {
+    public void makeDivision_ArgumentNumberOneDigitDivisorTwoDigitsWithRecurPeriod_CorrectResult() {
         makeDivision(7, 12);
         assertThat(getPartialNums(), is(Arrays.asList(70, 100, 40)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(60, 96, 36)));
@@ -89,7 +89,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorThreeDigitsPeriod10_CorrectResult() {
+    public void makeDivision_ArgumentNumberOneDigitDivisorTwoDigitsWithRecurPeriodInitialPeriodTen_CorrectResult() {
         makeDivision(7, 12, 10);
         assertThat(getPartialNums(), is(Arrays.asList(70, 100, 40)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(60, 96, 36)));
@@ -98,7 +98,7 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorHasSameDigitsAsNumber_CorrectResult() {
+    public void makeDivision_ArgumentsDivisorHasSameDigitsAsNumberWithRecurPeriod_CorrectResult() {
         makeDivision(25, 39);
         assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195)));
@@ -107,8 +107,8 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrectDivisorHasSameDigitsAsNumberPeriod10_CorrectResult() {
-        makeDivision(25, 39);
+    public void makeDivision_ArgumentsDivisorHasSameDigitsAsNumberWithRecurPeriodInitialPeriodTen_CorrectResult() {
+        makeDivision(25, 39, 10);
         assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195)));
         assertThat(getNumRemains(), is(Arrays.asList(16, 4, 1, 22, 25)));
@@ -116,8 +116,8 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrect_CorrectResult() {
-        makeDivision(2, 99);
+    public void makeDivision_ArgumentNumberOneDigitDivisorTwoDigitsWithRecurPeriodInitialPeriodThree_CorrectResult() {
+        makeDivision(2, 99, 3);
         assertThat(getPartialNums(), is(Arrays.asList(200)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(198)));
         assertThat(getNumRemains(), is(Arrays.asList(2)));
@@ -125,11 +125,28 @@ public class FloatingDivisionManagerTest {
     }
 
     @Test
-    public void makeDivision_ArgumentsCorrect2_CorrectResult() {
-        makeDivision(17, 11);
+    public void makeDivision_ArgumentsDivisorHasSameDigitsAsNumberWithRecurPeriodInitialPeriodNine_CorrectResult() {
+        makeDivision(17, 11, 9);
         assertThat(getPartialNums(), is(Arrays.asList(17, 60, 50)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(11, 55, 44)));
         assertThat(getNumRemains(), is(Arrays.asList(6, 5, 6)));
         assertThat(getResult(), is("1.(54)"));
+    }
+
+    @Test
+    public void makeDivision_ArgumentsNumberOneDigitDivisorThreeDigitsWithRecurPeriod_CorrectResult() {
+        makeDivision(1, 999);
+        assertThat(getPartialNums(), is(Arrays.asList(1000)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(999)));
+        assertThat(getNumRemains(), is(Arrays.asList(1)));
+        assertThat(getResult(), is("0.(001)"));
+    }
+    @Test
+    public void makeDivision_ArgumentsNumberOneDigitDivisorSevenDigitsWithRecurPeriod_CorrectResult() {
+        makeDivision(4, 9999999);
+        assertThat(getPartialNums(), is(Arrays.asList(40000000)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(39999996)));
+        assertThat(getNumRemains(), is(Arrays.asList(4)));
+        assertThat(getResult(), is("0.(0000004)"));
     }
 }

@@ -14,7 +14,7 @@ public class FloatingDivisionManager {
 
 
     public static void makeDivision(int number, int divisor) {
-        makeDivision(number, divisor, 7);
+        makeDivision(number, divisor, 10);
     }
 
     public static void makeDivision(int number, int divisor, int countPeriodNum) {
@@ -48,6 +48,8 @@ public class FloatingDivisionManager {
         int numberLength = String.valueOf(number).length();
         int divisorLength = String.valueOf(divisor).length();
         int differenceInLength = numberLength - divisorLength;
+        if (differenceInLength < -1)
+            differenceInLength = -1;
         int tmpNumber = number;
         countPeriodNum = -1 * countPeriodNum;
         while (differenceInLength != countPeriodNum) {

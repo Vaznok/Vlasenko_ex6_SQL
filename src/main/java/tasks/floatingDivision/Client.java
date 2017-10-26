@@ -4,6 +4,6 @@ import java.util.HashMap;
 
 public class Client {
     public static void main(String[] args) {
-        FloatingDivisionManager.makeDivision(-7, 99);
+        FloatingDivisionManager.makeDivision(4, 9999999);
     }
 }
