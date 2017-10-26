@@ -1,6 +1,7 @@
 package tasks.floatingDivision;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FloatingDivisionManager {
@@ -9,6 +10,8 @@ public class FloatingDivisionManager {
     private static List<Integer> partialNums = new ArrayList<>();
     private static StringBuilder tmpResult;
     private static String result;
+    private static boolean periodStarted = false;
+    private static boolean hasRecursPeriod = false;
 
     public static void makeDivision(int number, int divisor) {
         makeDivision(number, divisor, 7);
@@ -25,6 +28,7 @@ public class FloatingDivisionManager {
         partialNums.clear();
         tmpResult = new StringBuilder();
         result = null;
+        periodStarted = false;
 
         if (number == 0) {
             result = "0";
@@ -38,6 +42,11 @@ public class FloatingDivisionManager {
     }
 
     private static void divisionManager(int number, int divisor, int countPeriodNum) {
+        String numAfterComma = fractionToDecimal(number, divisor);
+        if (numAfterComma.contains("(")) {
+            hasRecursPeriod = true;
+            countPeriodNum = (numAfterComma.length() - 1) * -1;
+        }
         int numberLength = String.valueOf(number).length();
         int divisorLength = String.valueOf(divisor).length();
         int differenceInLength = numberLength - divisorLength;
@@ -50,6 +59,7 @@ public class FloatingDivisionManager {
                 } else {
                     tmpResult.append(".");
                 }
+                periodStarted = true;
             }
             int partialNum = selectPartialNum(tmpNumber, divisor, differenceInLength);
             if(partialNum < divisor) {
@@ -58,8 +68,12 @@ public class FloatingDivisionManager {
                     partialNums.add(partialNum);
                     break;
                 }
-                if (differenceInLength < 0)
+                if (differenceInLength < 0) {
                     tmpNumber = partialNum;
+                    if (periodStarted) {
+                        tmpResult.append("0");
+                    }
+                }
                 continue;
             }
             partialNums.add(partialNum);
@@ -68,10 +82,6 @@ public class FloatingDivisionManager {
             int numRemain = partialNum % divisor;
             nearestDivisorNums.add(nearestDivisorNum);
             numRemains.add(numRemain);
-            if (checkingPeriodFinding(differenceInLength)) {
-                tmpResult.insert(tmpResult.length(), "(" + partialDivResult + ")");
-                break;
-            }
             tmpResult.append(String.valueOf(partialDivResult));
             tmpNumber = changeTmpNum(tmpNumber, partialNum, numRemain);
             differenceInLength--;
@@ -82,6 +92,10 @@ public class FloatingDivisionManager {
             }
         }
         result = tmpResult.toString();
+        if (hasRecursPeriod) {
+            String newResult = result.substring(0, result.indexOf(".") + 1);
+            result = new StringBuilder(newResult).append(numAfterComma).toString();
+        }
     }
 
     private static int selectPartialNum(int tmpNumber, int divisor, int differenceInLength) {
@@ -100,7 +114,6 @@ public class FloatingDivisionManager {
             selectPartialNum.append("0");
             return Integer.valueOf(selectPartialNum.toString());
         }
-
     }
 
     private static int changeTmpNum(int tmpNumber, int partialNum, int numRemain) {
@@ -113,20 +126,32 @@ public class FloatingDivisionManager {
         }
         changeTmpNum.insert(0, numRemain);
         return Integer.valueOf(changeTmpNum.toString());
-
     }
 
-    private static boolean checkingPeriodFinding (int differenceInLength) {
-        if (numRemains.size() > 1 && differenceInLength < -1) {
-            if (partialNums.get(partialNums.size() - 2) == partialNums.get(partialNums.size() - 1)) {
-                partialNums.remove(partialNums.size() - 1);
-                nearestDivisorNums.remove(nearestDivisorNums.size() - 1);
-                numRemains.remove(numRemains.size() - 1);
-                tmpResult.deleteCharAt(tmpResult.length() - 1);
-                return true;
+    private static String fractionToDecimal(int numerator, int denominator) {
+        long num = numerator, den = denominator;
+        long res = num / den;
+        long remainder = (num % den) * 10;
+
+        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+        String result = "";
+        while (remainder != 0) {
+
+            if (map.containsKey(remainder)) {
+                int beg = map.get(remainder);
+                String part1 = result.substring(0, beg);
+                String part2 = result.substring(beg, result.length());
+                result = part1 + "(" + part2 + ")";
+                return result;
             }
+
+            map.put(remainder, result.length());
+            res = remainder / den;
+            result += String.valueOf(res);
+            remainder = (remainder % den) * 10;
         }
-        return  false;
+
+        return result;
     }
 
     static List<Integer> getNearestDivisorNums() {

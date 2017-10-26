@@ -40,14 +40,15 @@ public class ViewDivision {
         int partialNumLenght = String.valueOf(partialNums.get(0)).length();
         int nearestNumLenght = String.valueOf(nearestDivisorNums.get(0)).length();
         int differenceInLenght = partialNumLenght - nearestNumLenght;
+
         String viewHead;
         if (number > nearestDivisorNums.get(0)) {
             viewHead = String.format("%d|%d\n%s|%s",
                     number, divisor, drawLineForHead(differenceInLenght, String.valueOf(nearestDivisorNums.get(0)), numLenght), result);
         } else {
             viewHead = String.format("%s|%d\n%s|%s",
-                    drawLineForHead(0, String.valueOf(number), nearestNumLenght), divisor,
-                    drawLineForHead(differenceInLenght, String.valueOf(nearestDivisorNums.get(0)), nearestNumLenght), result);
+                    drawLineForHead(0, String.valueOf(number), partialNumLenght), divisor,
+                    drawLineForHead(differenceInLenght, String.valueOf(nearestDivisorNums.get(0)), partialNumLenght), result);
         }
         System.out.println(viewHead);
     }
@@ -66,25 +67,32 @@ public class ViewDivision {
             else
                 indexInsertion += previousPartialNumLenght;
 
-            System.out.println(drawLine(indexInsertion, String.valueOf(partialNums.get(i))));
-            System.out.println(drawLine(indexInsertion + differenceInLenght, String.valueOf(nearestDivisorNums.get(i))));
+            System.out.println(drawLineForBody(indexInsertion, String.valueOf(partialNums.get(i))));
+            System.out.println(drawLineForBody(indexInsertion + differenceInLenght, String.valueOf(nearestDivisorNums.get(i))));
         }
         indexInsertion += String.valueOf(partialNums.get(partialNums.size() - 1)).length() - String.valueOf(numRemains.get(numRemains.size() - 1)).length();
         if (partialNums.size() > numRemains.size()) {
-            System.out.println(drawLine(indexInsertion, String.valueOf(partialNums.get(partialNums.size() - 1))));
+            System.out.println(drawLineForBody(indexInsertion, String.valueOf(partialNums.get(partialNums.size() - 1))));
         } else {
-            System.out.println(drawLine(indexInsertion, String.valueOf(numRemains.get(numRemains.size() - 1))));
+            System.out.println(drawLineForBody(indexInsertion, String.valueOf(numRemains.get(numRemains.size() - 1))));
         }
     }
 
-    private String drawLine (int indexInsertion, String str) {
+    String drawLineForBody(int indexInsertion, String str) {
+        if (indexInsertion < 0)
+            throw new IllegalArgumentException();
         StringBuilder line = new StringBuilder();
-        for (int i = 0; i < indexInsertion + str.length() + 1; i++)
+        for (int i = 0; i < indexInsertion + str.length() - 1; i++)
             line.append(" ");
-        return line.insert(indexInsertion, str).toString();
+        return line.replace(indexInsertion, indexInsertion + str.length() - 1, str).toString();
     }
 
-    private String drawLineForHead (int indexInsertion, String str, int numLength) {
+    String drawLineForHead (int indexInsertion, String str, int numLength) {
+        if (indexInsertion < 0)
+            throw new IllegalArgumentException();
+        if (numLength < (indexInsertion + str.length()))
+            throw new IllegalArgumentException();
+
         StringBuilder line = new StringBuilder();
         for (int i = 0; i < numLength - str.length(); i++)
             line.append(" ");

@@ -103,15 +103,33 @@ public class FloatingDivisionManagerTest {
         assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220)));
         assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195)));
         assertThat(getNumRemains(), is(Arrays.asList(16, 4, 1, 22, 25)));
-        assertThat(getResult(), is("0.64125"));
+        assertThat(getResult(), is("0.(641025)"));
     }
 
     @Test
     public void makeDivision_ArgumentsCorrectDivisorHasSameDigitsAsNumberPeriod10_CorrectResult() {
-        makeDivision(25, 39, 10);
-        assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220, 250, 160, 40)));
-        assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195, 234, 156, 39)));
-        assertThat(getNumRemains(), is(Arrays.asList(16, 4, 1, 22, 25, 16, 4, 1)));
-        assertThat(getResult(), is("0.64125641"));
+        makeDivision(25, 39);
+        assertThat(getPartialNums(), is(Arrays.asList(250, 160, 40, 100, 220)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(234, 156, 39, 78, 195)));
+        assertThat(getNumRemains(), is(Arrays.asList(16, 4, 1, 22, 25)));
+        assertThat(getResult(), is("0.(641025)"));
+    }
+
+    @Test
+    public void makeDivision_ArgumentsCorrect_CorrectResult() {
+        makeDivision(2, 99);
+        assertThat(getPartialNums(), is(Arrays.asList(200)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(198)));
+        assertThat(getNumRemains(), is(Arrays.asList(2)));
+        assertThat(getResult(), is("0.(02)"));
+    }
+
+    @Test
+    public void makeDivision_ArgumentsCorrect2_CorrectResult() {
+        makeDivision(17, 11);
+        assertThat(getPartialNums(), is(Arrays.asList(17, 60, 50)));
+        assertThat(getNearestDivisorNums(), is(Arrays.asList(11, 55, 44)));
+        assertThat(getNumRemains(), is(Arrays.asList(6, 5, 6)));
+        assertThat(getResult(), is("1.(54)"));
     }
 }
