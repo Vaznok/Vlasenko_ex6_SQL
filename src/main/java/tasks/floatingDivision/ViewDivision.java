@@ -42,7 +42,7 @@ public class ViewDivision {
         int differenceInLenght = partialNumLenght - nearestNumLenght;
 
         String viewHead;
-        if (number > nearestDivisorNums.get(0)) {
+        if (Math.abs(number) > Math.abs(nearestDivisorNums.get(0))) {
             viewHead = String.format("%d|%d\n%s|%s",
                     number, divisor, drawLineForHead(differenceInLenght, String.valueOf(nearestDivisorNums.get(0)), numLenght), result);
         } else {
