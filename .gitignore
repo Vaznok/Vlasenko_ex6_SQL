@@ -11,6 +11,8 @@ src/main/java/tasks/anagramm
 src/test/java/tasks/anagramm
 src/main/java/tasks/integerDivision
 src/test/java/tasks/integerDivision
+src/main/java/tasks/floatingDivision
+src/test/java/tasks/floatingDivision
 .idea/workspace.xml
 .idea/        
 vlasenkoFoxminded.iml
