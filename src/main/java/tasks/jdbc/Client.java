@@ -25,7 +25,7 @@ public class Client {
         }
         System.out.println();
         conn.commit();
-        stmt.execute("DELETE FROM GROUPS WHERE NAME='SR-01'");
+        stmt.execute("DELETE FROM STUDENTS WHERE GROUP_ID = 1");
 
         ResultSet rs2 = stmt.executeQuery("SELECT STUDENTS.FIRST_NAME, STUDENTS.LAST_NAME, GROUPS.NAME FROM STUDENTS " +
                 "INNER JOIN GROUPS ON STUDENTS.GROUP_ID=GROUPS.GROUP_ID");
